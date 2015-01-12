@@ -1,4 +1,11 @@
 {
     "name": "bbqueue/meat",
-    "license": "MIT"
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Cees-Jan Kiewiet",
+            "email": "ceesjank@gmail.com",
+            "homepage": "http://wyrihaximus.net/"
+        }
+    ],
 }
