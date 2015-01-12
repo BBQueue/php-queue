@@ -8,4 +8,14 @@
             "homepage": "http://wyrihaximus.net/"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "BBQueue\\Meat\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BBQueue\\Tests\\Meat\\": "tests/"
+        }
+    }
 }
