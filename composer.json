@@ -8,6 +8,15 @@
             "homepage": "http://wyrihaximus.net/"
         }
     ],
+    "require": {
+        "php": ">=5.5"
+    },
+    "require-dev": {
+        "satooshi/php-coveralls": "^0.6",
+        "phpunit/phpunit": "~4.0",
+        "vectorface/dunit": "~2.0",
+        "squizlabs/php_codesniffer": "~1.0"
+    },
     "autoload": {
         "psr-4": {
             "BBQueue\\Meat\\": "src/"
