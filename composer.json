@@ -1,5 +1,5 @@
 {
-    "name": "bbqueue/meat",
+    "name": "bbqueue/queue",
     "license": "MIT",
     "authors": [
         {
@@ -24,12 +24,12 @@
     },
     "autoload": {
         "psr-4": {
-            "BBQueue\\": "src/"
+            "BBQueue\\Queue\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "BBQueue\\Tests\\": "tests/"
+            "BBQueue\\Tests\\Queue\\": "tests/"
         }
     }
 }
