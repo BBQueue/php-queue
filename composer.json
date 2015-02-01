@@ -9,7 +9,12 @@
         }
     ],
     "require": {
-        "php": ">=5.5"
+        "php": ">=5.5",
+        "iron-io/iron_mq": "~1.5",
+        "pda/pheanstalk": "~3.0",
+        "aws/aws-sdk-php": "~2.7",
+        "chrisboulton/php-resque": "~1.2",
+        "react/promise": "~2.2"
     },
     "require-dev": {
         "satooshi/php-coveralls": "^0.6",
@@ -19,12 +24,12 @@
     },
     "autoload": {
         "psr-4": {
-            "BBQueue\\Meat\\": "src/"
+            "BBQueue\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "BBQueue\\Tests\\Meat\\": "tests/"
+            "BBQueue\\Tests\\": "tests/"
         }
     }
 }
