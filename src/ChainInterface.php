@@ -2,7 +2,7 @@
 
 namespace BBQueue\Queue;
 
-interface EnvelopeChainInterface
+interface ChainInterface
 {
 
 }
