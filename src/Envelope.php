@@ -41,16 +41,16 @@ class Envelope implements EnvelopInterface
 
     protected function store()
     {
-        $this->persistence->store($this->track, $this->job->getPayload());
+        $this->persistence->store($this, $this->job->getPayload());
 
         if ($this->predecessor !== null) {
-            $this->persistence->chain($this->predecessor->getTrack(), $this->track);
+            $this->persistence->chain($this->predecessor, $this);
         }
     }
 
     public function done()
     {
-        $this->persistence->done($this->track);
+        $this->persistence->done($this);
     }
 
     /**
