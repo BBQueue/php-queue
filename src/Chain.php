@@ -56,4 +56,12 @@ class Chain implements ChainInterface, PromiseInterface
 
         return $chain;
     }
+
+    /**
+     *
+     */
+    public function done()
+    {
+        $this->predecessor->done();
+    }
 }
