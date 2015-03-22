@@ -43,7 +43,7 @@ class Envelope implements EnvelopInterface
     {
         $this->persistence->store($this->track, $this->job->getPayload());
 
-        if ($this->predecessor instanceof EnvelopInterface) {
+        if ($this->predecessor !== null) {
             $this->persistence->chain($this->predecessor->getTrack(), $this->track);
         }
     }

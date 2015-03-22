@@ -46,7 +46,7 @@ class Chain implements ChainInterface, PromiseInterface
      */
     public function chain(JobInterface $job, QueueInterface $queue = null)
     {
-        if (!($queue instanceof QueueInterface)) {
+        if ($queue === null) {
             $queue = $this->queue;
         }
 
