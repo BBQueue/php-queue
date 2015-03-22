@@ -7,7 +7,7 @@ interface TrackInterface
     /**
      * @return Track
      */
-    public function create();
+    public static function create();
 
     /**
      * @return string
