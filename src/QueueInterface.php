@@ -2,7 +2,7 @@
 
 namespace BBQueue\Queue;
 
-interface QueueInterface
+interface QueueInterface extends LoopAwareInterface
 {
     /**
      * @param EnvelopInterface $job

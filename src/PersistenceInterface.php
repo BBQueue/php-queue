@@ -2,7 +2,7 @@
 
 namespace BBQueue\Queue;
 
-interface PersistenceInterface
+interface PersistenceInterface extends LoopAwareInterface
 {
     /**
      * @param EnvelopInterface $track

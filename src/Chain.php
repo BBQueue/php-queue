@@ -2,6 +2,7 @@
 
 namespace BBQueue\Queue;
 
+use React\Promise\Deferred;
 use React\Promise\PromiseInterface;
 
 class Chain implements ChainInterface, PromiseInterface
@@ -31,11 +32,16 @@ class Chain implements ChainInterface, PromiseInterface
      * @param callable $onRejected
      * @param callable $onProgress
      *
-     * @return void
+     * @return PromiseInterface
      */
     public function then(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null)
     {
+        $deferred = new Deferred();
+
         $this->predecessor->done();
+        $this->queue->run();
+
+        return $deferred->promise()->then($onFulfilled, $onRejected, $onProgress);
     }
 
     /**
@@ -63,5 +69,6 @@ class Chain implements ChainInterface, PromiseInterface
     public function done()
     {
         $this->predecessor->done();
+        $this->queue->run();
     }
 }

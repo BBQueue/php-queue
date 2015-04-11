@@ -2,7 +2,9 @@
 
 namespace BBQueue\Queue\Persistence;
 
-class Redis
-{
+use BBQueue\Queue\PersistenceInterface;
 
+class Redis implements PersistenceInterface
+{
+    //
 }
