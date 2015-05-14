@@ -15,7 +15,8 @@
         "aws/aws-sdk-php": "~2.7",
         "chrisboulton/php-resque": "~1.2",
         "react/promise": "~2.2",
-        "zikarsky/react-gearman": "0.1.*"
+        "zikarsky/react-gearman": "0.1.*",
+        "jms/metadata": "~1.5"
     },
     "require-dev": {
         "satooshi/php-coveralls": "^0.6",

@@ -5,6 +5,7 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 use BBQueue\Queue\Backend\Gearman;
 use BBQueue\Queue\JobInterface;
 use BBQueue\Queue\Queue;
+use BBQueue\Queue\Worker;
 use BBQueue\StateStorage\Redis;
 
 class EchoConsumer implements JobInterface
@@ -23,6 +24,7 @@ class EchoConsumer implements JobInterface
 }
 
 $queue = new Queue(new Gearman(), new Redis());
-$queue->queue(new EchoJob([
-    'echo' => 'foo.bar',
-]))->done();
+
+$worker = new Worker();
+
+$worker->run();

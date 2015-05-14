@@ -5,7 +5,7 @@ namespace BBQueue\Queue;
 use React\EventLoop\Factory;
 use React\EventLoop\LoopInterface;
 
-class Queue implements QueueInterface
+class Queue implements QueueInterface, LoopAwareInterface
 {
     /**
      * @var QueueInterface
