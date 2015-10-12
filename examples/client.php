@@ -1,28 +1,13 @@
 <?php
 
 require dirname(__DIR__) . '/vendor/autoload.php';
+require 'common.php';
 
-use BBQueue\Queue\Backend\Gearman;
-use BBQueue\Queue\JobInterface;
+use BBQueue\Queue\Queue\RabbitMQ;
 use BBQueue\Queue\Queue;
-use BBQueue\StateStorage\Redis;
+use BBQueue\Queue\Persistence\Redis;
 
-class EchoJob implements JobInterface
-{
-    protected $payload;
-
-    public function __construct(array $payload)
-    {
-        $this->payload = $payload;
-    }
-
-    public function getPayload()
-    {
-        return $this->payload;
-    }
-}
-
-$queue = new Queue(new Gearman(), new Redis());
+$queue = new Queue(new RabbitMQ(), new Redis());
 $queue->queue(new EchoJob([
-    'echo' => 'foo.bar',
+    'echo' => 'foo.' . time() . '.bar.asjhudqwuo73t987*&%$*%()*)(&^(%*^%&^$#%$&%*&*&)*(&^&$%%*^%&*&)(*&*_^%(*^#*$(*&)*)',
 ]))->done();

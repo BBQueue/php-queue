@@ -2,7 +2,7 @@
 
 namespace BBQueue\Queue;
 
-interface TrackInterface
+interface TrackInterface extends \JsonSerializable
 {
     /**
      * @return Track

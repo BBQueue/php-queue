@@ -4,5 +4,5 @@ namespace BBQueue\Queue;
 
 interface ConsumerInterface
 {
-    //
+
 }

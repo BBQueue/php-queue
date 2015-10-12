@@ -10,6 +10,11 @@ interface JobInterface
     public function __construct(array $payload);
 
     /**
+     * @return string
+     */
+    public function getName();
+
+    /**
      * @return array
      */
     public function getPayload();

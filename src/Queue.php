@@ -7,6 +7,8 @@ use React\EventLoop\LoopInterface;
 
 class Queue implements QueueInterface, LoopAwareInterface
 {
+    use LoopAwareTrait;
+
     /**
      * @var QueueInterface
      */
@@ -28,10 +30,11 @@ class Queue implements QueueInterface, LoopAwareInterface
     protected $loop;
 
     /**
-     * @param QueueInterface $queue
+     * @param BackendInterface $queue
      * @param PersistenceInterface $persistence
+     * @param LoopInterface $loop
      */
-    public function __construct(QueueInterface $queue, PersistenceInterface $persistence, LoopInterface $loop = null)
+    public function __construct(BackendInterface $queue, PersistenceInterface $persistence, LoopInterface $loop = null)
     {
         $this->queue = $queue;
         $this->persistence = $persistence;
@@ -47,7 +50,9 @@ class Queue implements QueueInterface, LoopAwareInterface
 
     public function run()
     {
-        $this->loop->run();
+        if ($this->autoRunLoop) {
+            $this->loop->run();
+        }
     }
 
     /**
@@ -57,13 +62,13 @@ class Queue implements QueueInterface, LoopAwareInterface
      */
     public function queue(JobInterface $job, EnvelopInterface $parent = null)
     {
-        $envelope = new Envelope($this->persistence, $job, $parent);
+        $envelope = Envelope::create($this->persistence, $job, $parent);
         $this->queue->queue($envelope);
         return new Chain($this, $envelope);
     }
 
-    public function register($task)
+    public function pull()
     {
-
+        return $this->queue->pull();
     }
 }

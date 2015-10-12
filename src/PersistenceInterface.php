@@ -4,6 +4,10 @@ namespace BBQueue\Queue;
 
 interface PersistenceInterface extends LoopAwareInterface
 {
+    const STATUS_NEW        = 0;
+    const STATUS_PICKEDUP   = 1;
+    const STATUS_DONE       = 2;
+
     /**
      * @param EnvelopInterface $track
      * @param array $payload
@@ -23,4 +27,9 @@ interface PersistenceInterface extends LoopAwareInterface
      * @return void
      */
     public function chain(EnvelopInterface $track, EnvelopInterface $successor);
+
+    public function getPayload(TrackInterface $track);
+
+    public function markPickedup(TrackInterface $track);
+    public function markDone(TrackInterface $track);
 }

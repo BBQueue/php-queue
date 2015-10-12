@@ -2,12 +2,11 @@
 
 namespace BBQueue\Queue;
 
-interface QueueInterface extends LoopAwareInterface
+interface QueueInterface
 {
     /**
-     * @param EnvelopInterface $job
-     *
-     * @return ChainInterface
+     * @param JobInterface $job
+     * @return mixed
      */
-    public function queue(EnvelopInterface $job);
+    public function queue(JobInterface $job);
 }
