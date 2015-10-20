@@ -7,18 +7,20 @@ use React\Promise\Deferred;
 abstract class AbstractQueue
 {
     use LoopAwareTrait;
-    protected $loop;
 
     protected $connected = false;
     protected $connecting = false;
 
+    protected $options;
     protected $list;
 
     abstract protected function connect();
     abstract protected function disconnect();
+    abstract protected function pushMessage($string);
 
-    public function __construct()
+    public function __construct(array $options)
     {
+        $this->options = $options;
         $this->list = new \SplQueue();
     }
 

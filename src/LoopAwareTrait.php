@@ -7,6 +7,11 @@ use React\EventLoop\LoopInterface;
 trait LoopAwareTrait
 {
     /**
+     * @var LoopInterface
+     */
+    protected $loop;
+
+    /**
      * @param LoopInterface $loop
      *
      * @return void

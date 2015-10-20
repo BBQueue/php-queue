@@ -25,11 +25,6 @@ class Queue implements QueueInterface, LoopAwareInterface
     protected $autoRunLoop = false;
 
     /**
-     * @var LoopInterface
-     */
-    protected $loop;
-
-    /**
      * @param BackendInterface $queue
      * @param PersistenceInterface $persistence
      * @param LoopInterface $loop
