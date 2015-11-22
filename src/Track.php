@@ -52,6 +52,4 @@ class Track implements TrackInterface
     {
         return (string) $this;
     }
-
-
 }
