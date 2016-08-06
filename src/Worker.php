@@ -2,6 +2,7 @@
 
 namespace BBQueue\Queue;
 
+use BBQueue\Queue\Response\ResponseJob;
 use React\Promise\RejectedPromise;
 
 class Worker
@@ -17,7 +18,7 @@ class Worker
     protected $persistence;
 
     /**
-     * @var ResponseInterface
+     * @var QueueInterface
      */
     protected $response;
 
@@ -29,8 +30,9 @@ class Worker
     /**
      * @param QueueInterface $queue
      * @param PersistenceInterface $persistence
+     * @param QueueInterface $response
      */
-    public function __construct(QueueInterface $queue, PersistenceInterface $persistence, ResponseInterface $response)
+    public function __construct(QueueInterface $queue, PersistenceInterface $persistence, QueueInterface $response)
     {
         $this->queue = $queue;
         $this->persistence = $persistence;
@@ -46,9 +48,14 @@ class Worker
     {
         $this->queue->pull()->on('message', function ($message) {
             Envelope::hydrate($this->persistence, $message)->then(function (EnvelopInterface $envelop) {
-                return $this->matchJob($envelop);
-            })->then(function ($result) {
-                $this->handleResult($result);
+                $this->persistence->markPickedup($envelop->getTrack());
+                $promise = $this->matchJob($envelop);
+                $promise->done(function () use ($envelop) {
+                    $this->persistence->markPickedup($envelop->getTrack());
+                });
+                return $promise->then(function ($result) use ($envelop) {
+                    $this->handleResult($result, $envelop);
+                });
             });
         });
         $this->queue->run();
@@ -64,8 +71,11 @@ class Worker
         return \React\Promise\resolve((new $consumer($envelope->getJob()->getPayload()))->handle());
     }
 
-    protected function handleResult()
+    protected function handleResult($result, EnvelopInterface $envelop)
     {
-
+        $this->response->queue(new ResponseJob([
+            'result' => $result,
+            'response_to' => (string) $envelop->getTrack()
+        ]));
     }
 }

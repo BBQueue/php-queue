@@ -20,7 +20,12 @@ class RabbitMQ extends AbstractQueue implements BackendInterface
 {
     use EventEmitterTrait;
 
+    /**
+     * @var Client
+     */
     protected $client;
+
+    protected $connectPromise;
 
     /**
      * @param EnvelopInterface $job
@@ -32,23 +37,37 @@ class RabbitMQ extends AbstractQueue implements BackendInterface
 
     protected function pushMessage($sting)
     {
-        $this->client->send('/queue/foo.bar', $sting);
+        var_export($this->options);
+        $this->client->send($this->options['queue'], $sting);
     }
 
-    protected function connect()
+    public function connect()
     {
         if ($this->client !== null) {
-            return new FulfilledPromise();
+            return new FulfilledPromise($this->client);
         }
 
-        return (new Factory($this->loop))->createClient([
+        if ($this->connectPromise !== null) {
+            return $this->connectPromise;
+        }
+echo 'connecting';
+        $deferred = new Deferred();
+
+        (new Factory($this->loop))->createClient([
             'vhost' => '/',
             'login' => 'guest',
             'passcode' => 'guest',
-        ])->connect()->then(function (Client $client) {
+        ])->connect()->then(function (Client $client) use ($deferred) {
+            $this->connectPromise = null;
             $this->client = $client;
-            return new FulfilledPromise();
+            echo 'connected';
+            $deferred->resolve();
+        }, function ($e) {
+            var_export($e->getMessage());
         });
+
+        $this->connectPromise = $deferred->promise();
+        return $this->connectPromise;
     }
 
     protected function disconnect()
@@ -60,7 +79,7 @@ class RabbitMQ extends AbstractQueue implements BackendInterface
     public function pull()
     {
         $this->connect()->then(function () {
-            $this->client->subscribe('/queue/foo.bar', function (Frame $frame) {
+            $this->client->subscribe($this->options['queue'], function (Frame $frame) {
                 $this->emit('message', [
                     json_decode($frame->body, true),
                 ]);

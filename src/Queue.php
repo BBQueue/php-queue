@@ -34,6 +34,7 @@ class Queue implements QueueInterface, LoopAwareInterface
         $this->queue = $queue;
         $this->persistence = $persistence;
 
+        $this->loop = $loop;
         if ($this->loop === null) {
             $this->loop = Factory::create();
             $this->autoRunLoop = true;
@@ -45,9 +46,9 @@ class Queue implements QueueInterface, LoopAwareInterface
 
     public function run()
     {
-        if ($this->autoRunLoop) {
+        /*if ($this->autoRunLoop) {
             $this->loop->run();
-        }
+        }*/
     }
 
     /**

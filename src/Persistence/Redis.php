@@ -11,19 +11,13 @@ use Clue\React\Redis\Client;
 use Clue\React\Redis\Factory;
 use React\EventLoop\LoopInterface;
 use React\Promise\FulfilledPromise;
+use React\Promise\RejectedPromise;
 
 class Redis extends AbstractQueue implements PersistenceInterface
 {
     const KEY_PREFIX = 'bbqueue:envelopes:';
 
-    use LoopAwareTrait;
-
     protected $client;
-
-    /**
-     * @var LoopInterface
-     */
-    protected $loop;
 
     /**
      * @param EnvelopInterface $track
@@ -64,11 +58,14 @@ class Redis extends AbstractQueue implements PersistenceInterface
         return (new Factory($this->loop))->createClient()->then(function (Client $client) {
             $this->client = $client;
             return new FulfilledPromise();
+        }, function ($e) {
+            var_export($e->getMessage());die();
         });
     }
 
     protected function pushMessage($function, ...$arguments)
     {
+        $function = strtoupper($function);
         return $this->client->$function(...$arguments);
     }
 
@@ -87,11 +84,11 @@ class Redis extends AbstractQueue implements PersistenceInterface
 
     public function markPickedup(TrackInterface $track)
     {
-        // TODO: Implement markPickedup() method.
+        $this->push('set', static::KEY_PREFIX . (string) $track . ':status', PersistenceInterface::STATUS_PICKEDUP);
     }
 
     public function markDone(TrackInterface $track)
     {
-        // TODO: Implement markDone() method.
+        $this->push('set', static::KEY_PREFIX . (string) $track . ':status', PersistenceInterface::STATUS_DONE);
     }
 }

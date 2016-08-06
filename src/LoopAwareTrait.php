@@ -18,6 +18,7 @@ trait LoopAwareTrait
      */
     public function setLoop(LoopInterface $loop)
     {
+        echo 'set loop: ', get_class($this), PHP_EOL;
         $this->loop = $loop;
     }
 
